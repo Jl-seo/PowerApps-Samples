@@ -2,7 +2,11 @@
 <manifest>
   <control namespace="SampleNamespace" constructor="ReactStandardControl" version="0.1.1" display-name-key="ReactStandardControl_Display_Key" description-key="ReactStandardControl_Desc_Key" control-type="standard">
     <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
-    <property name="numberOfFaces" display-name-key="numberOfFaces_Display_Key" description-key="numberOfFaces_Desc_Key" of-type="Whole.None" usage="bound" required="false" />
+    <property name="fileUrl" display-name-key="fileUrl_Display_Key" description-key="fileUrl_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
+    <property name="fileType" display-name-key="fileType_Display_Key" description-key="fileType_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
+    <property name="ocrData" display-name-key="ocrData_Display_Key" description-key="ocrData_Desc_Key" of-type="SingleLine.TextArea" usage="bound" required="false" />
+    <property name="selectedFieldKey" display-name-key="selectedFieldKey_Display_Key" description-key="selectedFieldKey_Desc_Key" of-type="SingleLine.Text" usage="bound" required="false" />
+
     <resources>
       <code path="index.ts" order="1"/>
       <css path="css/ReactStandardControl.css" order="2" />
