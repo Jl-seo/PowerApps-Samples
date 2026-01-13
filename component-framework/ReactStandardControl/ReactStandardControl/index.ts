@@ -13,13 +13,16 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { FacepileBasicExample, IFacepileBasicExampleProps } from "./Facepile";
+import App, { IAppProps } from "./App";
 
 export class ReactStandardControl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	private notifyOutputChanged: () => void;
 	private theContainer: HTMLDivElement;
-	private props: IFacepileBasicExampleProps = {
-		numberFacesChanged: this.numberFacesChanged.bind(this),
+	private props: IAppProps = {
+		fileUrl: "",
+		fileType: "",
+		ocrData: "",
+		selectedFieldKey: ""
 	};
 
 	/**
@@ -44,9 +47,8 @@ export class ReactStandardControl implements ComponentFramework.StandardControl<
 		container: HTMLDivElement
 	): void {
 		this.notifyOutputChanged = notifyOutputChanged;
-			// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-			this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
 		this.theContainer = container;
+		this.theContainer.style.height = "100%"; // Ensure container takes full height
 	}
 
 	/**
@@ -54,19 +56,15 @@ export class ReactStandardControl implements ComponentFramework.StandardControl<
 	 * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
-		if (context.updatedProperties.includes("numberOfFaces")) {
-			// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-			this.props.numberOfFaces = context.parameters.numberOfFaces.raw || 3;
-		}
+		this.props = {
+			fileUrl: context.parameters.fileUrl.raw ?? "",
+			fileType: context.parameters.fileType.raw ?? "pdf",
+			ocrData: context.parameters.ocrData.raw ?? "",
+			selectedFieldKey: context.parameters.selectedFieldKey.raw ?? ""
+		};
 
-		ReactDOM.render(React.createElement(FacepileBasicExample, this.props), this.theContainer);
-	}
-
-	private numberFacesChanged(newValue: number) {
-		if (this.props.numberOfFaces !== newValue) {
-			this.props.numberOfFaces = newValue;
-			this.notifyOutputChanged();
-		}
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+		(ReactDOM as any).render(React.createElement(App, this.props), this.theContainer);
 	}
 
 	/**
@@ -74,9 +72,7 @@ export class ReactStandardControl implements ComponentFramework.StandardControl<
 	 * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as "bound" or "output"
 	 */
 	public getOutputs(): IOutputs {
-		return {
-			numberOfFaces: this.props.numberOfFaces,
-		};
+		return { };
 	}
 
 	/**
@@ -84,6 +80,7 @@ export class ReactStandardControl implements ComponentFramework.StandardControl<
 	 * i.e. cancelling any pending remote calls, removing listeners, etc.
 	 */
 	public destroy(): void {
-		ReactDOM.unmountComponentAtNode(this.theContainer);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+		(ReactDOM as any).unmountComponentAtNode(this.theContainer);
 	}
 }

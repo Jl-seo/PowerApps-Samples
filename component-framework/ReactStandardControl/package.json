@@ -14,8 +14,13 @@
 	},
 	"dependencies": {
 		"@fluentui/react": "^8.121.3",
+		"@react-pdf-viewer/core": "^3.12.0",
+		"@react-pdf-viewer/default-layout": "^3.12.0",
+		"lucide-react": "^0.562.0",
+		"pdfjs-dist": "^3.11.174",
 		"react": "^16.14.0",
-		"react-dom": "^16.14.0"
+		"react-dom": "^16.14.0",
+		"tailwind-merge": "^3.4.0"
 	},
 	"devDependencies": {
 		"@microsoft/eslint-plugin-power-apps": "^0.2.51",
